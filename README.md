@@ -67,8 +67,7 @@ All you need to do is include the script [table-roller.js](./table-roller.js) in
 
 Including the script can be done in multiple ways:
 
- - Using a `<script>` tag and a permalink, somewhere in your blog (or single blog post):
-   - `<script async defer src="https://github.com/Groffa/table-roller/blob/9cba258bcf8da313081b5aa0931e94af634d538c/README.md"></script>`
  - Include the entirety of the script file in your blog post, inside a script `<script>` tag
    - E.g. `<script>(...full contents of table-roller.js here...)</script>`
- - Download the file and host it yourself somewhere, and then go about as the first item in this list
+ - Download the file and host it yourself somewhere, and include with a `<script>` tag:
+   - `<script async defer src="(...your url...)/table-roller.js"></script>`
