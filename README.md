@@ -71,3 +71,9 @@ Including the script can be done in multiple ways:
    - E.g. `<script>(...full contents of table-roller.js here...)</script>`
  - Download the file and host it yourself somewhere, and include with a `<script>` tag:
    - `<script async defer src="(...your url...)/table-roller.js"></script>`
+
+### Minified version
+
+The file `table-roller.min.js` is a minified version of the same file, using [Google Closure Compiler](https://developers.google.com/closure/compiler).
+
+If you want to minify locally, you need to download the Google Closure Compiler [JAR-file from the Maven repository](https://mvnrepository.com/artifact/com.google.javascript/closure-compiler), rename it to `closure-compiler.jar`, and then run `minify.sh`.

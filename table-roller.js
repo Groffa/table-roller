@@ -34,20 +34,28 @@ class TableRoller extends HTMLElement {
     ];
   }
 
+  constructor() {
+    super();
+    this.table = null;
+    this.outputPane = null;
+    this.outputCounter = 1;
+  }
+
   connectedCallback() {
     if (this.isConnected) {
       const tables = this.querySelectorAll("table");
       if (tables.length === 0) {
-        throw new Error(
+        console.warn(
           "The <table-roller> element needs to wrap a <table> (e.g. as a child element), but could not find one."
         );
       } else if (tables.length > 1) {
-        throw new Error(
+        console.warn(
           "The <table-roller> element wraps several tables, which is not supported. Wrap each table separately."
         );
+      } else {
+        this.table = tables[0];
+        this.createActions();
       }
-      this.table = tables[0];
-      this.createActions();
     }
   }
 
@@ -134,7 +142,7 @@ class TableRoller extends HTMLElement {
     return this.outputPane;
   }
 
-  addButton(label, cb, hidden) {
+  addButton(label, cb, hidden = false) {
     const btn = document.createElement("button");
     btn.onclick = cb;
     btn.innerText = label;
