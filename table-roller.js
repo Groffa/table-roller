@@ -15,12 +15,13 @@
  * ```
  *
  * @element table-roller
- * @attr [no-headers=false] Table doesn't contain any headers, so include it
+ * @attr [no-headers=false] Table doesn't contain any headers, so include it as well
  * @attr [no-dice-column=false] First column of table doesn't contain row numbers
  * @attr [output-dice-column=false] Output a dice column as well when rolling
  * @attr [roll-label="Roll"] Label of roll button
  * @attr [clear-label="Clear"] Label of clear button
- * @attr [delim=" "] String to use when combining columns
+ * @attr [delim=" "] String to use when combining columns, except if using `glue`
+ * @attr [glue=""] Comma separated list of column indexes (starting on 1) that should glue with their next column (e.g. don't use delimeter between this column and the next)
  */
 class TableRoller extends HTMLElement {
   static get observedAttributes() {
@@ -31,6 +32,7 @@ class TableRoller extends HTMLElement {
       "clear-label",
       "output-dice-column",
       "delim",
+      "glue",
     ];
   }
 
@@ -57,6 +59,12 @@ class TableRoller extends HTMLElement {
         this.createActions();
       }
     }
+  }
+
+  get glue() {
+    return (this.getAttribute("glue") ?? "")
+      .split(",")
+      .map((s) => Number.parseInt(s, 10));
   }
 
   get outputDiceColumn() {
@@ -96,17 +104,23 @@ class TableRoller extends HTMLElement {
     const maxCols = this.cols;
     const allRows = this.rows;
     const startColIndex = this.noDiceColumn ? 0 : 1;
-    const s = [];
+    const gluers = this.glue;
+    const standardDelimeter = this.delim;
+    let s = "";
     for (let colIndex = startColIndex; colIndex < maxCols; ++colIndex) {
       const rowIndex =
         Math.floor(Math.random() * allRows.length) + (this.noHeaders ? 0 : 1);
-      s.push(
+
+      const columnText =
         this.table.querySelector(
           `tr:nth-child(${1 + rowIndex}) td:nth-child(${1 + colIndex})`
-        )?.innerText ?? ""
-      );
+        )?.innerText ?? "";
+
+      const delimeter =
+        gluers.indexOf(colIndex + 1) < 0 ? standardDelimeter : "";
+      s += columnText + delimeter;
     }
-    return s.join(this.delim);
+    return s;
   }
 
   rollAction() {
